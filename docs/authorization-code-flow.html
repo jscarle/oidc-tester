@@ -127,6 +127,10 @@
                             <input class="flex1" type="text" placeholder="scope" name="scope" />
                         </label>
                         <label>
+                            <span>audience</span>
+                            <input class="flex1" type="text" placeholder="audience" name="audience" />
+                        </label>
+                        <label>
                             <span>state</span>
                             <input class="flex1" type="text" placeholder="state" name="state" />
                         </label>
@@ -135,12 +139,22 @@
                             <input class="flex1" type="text" placeholder="nonce" name="nonce" />
                         </label>
                         <label>
+                            <span>id_token_hint</span>
+                            <input class="flex1" type="text" placeholder="id_token_hint" name="id_token_hint" />
+                        </label>
+                        <label>
                             <span>login_hint</span>
                             <input class="flex1" type="text" placeholder="login_hint" name="login_hint" />
                         </label>
                         <label>
                             <span>display</span>
-                            <input class="flex1" type="text" placeholder="display" name="display" />
+                            <select class="flex1" placeholder="display" name="display">
+                                <option></option>
+                                <option>page</option>
+                                <option>popup</option>
+                                <option>touch</option>
+                                <option>wap</option>
+                            </select>
                         </label>
                         <label>
                             <span>max_age</span>
