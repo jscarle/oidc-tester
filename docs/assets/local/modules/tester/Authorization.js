@@ -28,6 +28,7 @@ export class Authorization {
         const client = await this.configuration.get_client_metadata(issuer.issuer, this.configuration.get_active_client());
         const form = this.request.form;
         Array.from(form.elements).forEach(t => t.value = "");
+        this.reset_display_field();
         form.elements["authorization_endpoint"].value = issuer["authorization_endpoint"] || "";
         form.elements["response_type"].value = "code";
         form.elements["client_id"].value = client["client_id"] || "";
@@ -66,6 +67,63 @@ export class Authorization {
             return false;
         }
     }
+    reset_display_field() {
+        const form = this.request.form;
+        const select = form.querySelector("[data-display-select]");
+        const hidden = form.querySelector("[data-display-hidden]");
+        if (!select || !hidden) {
+            return;
+        }
+        const custom = form.querySelector("[data-display-custom]");
+        if (custom) {
+            custom.remove();
+        }
+        select.style.display = "";
+        select.value = "";
+        hidden.value = "";
+    }
+    show_custom_display(select, hidden) {
+        const form = this.request.form;
+        let custom = form.querySelector("[data-display-custom]");
+        if (!custom) {
+            custom = document.createElement("input");
+            custom.type = "text";
+            custom.placeholder = "display";
+            custom.classList.add("flex1");
+            custom.setAttribute("data-display-custom", "true");
+            custom.addEventListener("input", () => {
+                hidden.value = custom.value;
+            });
+            select.insertAdjacentElement("afterend", custom);
+        }
+        select.style.display = "none";
+        hidden.value = custom.value || "";
+        custom.focus();
+    }
+    bind_display_field() {
+        const form = this.request.form;
+        const select = form.querySelector("[data-display-select]");
+        const hidden = form.querySelector("[data-display-hidden]");
+        if (!select || !hidden) {
+            return;
+        }
+        const sync_hidden = () => {
+            const value = select.value;
+            if (value === "custom") {
+                this.show_custom_display(select, hidden);
+                return;
+            }
+            hidden.value = value || "";
+        };
+        select.addEventListener("input", e => {
+            e.preventDefault();
+            sync_hidden();
+        });
+        select.addEventListener("change", e => {
+            e.preventDefault();
+            sync_hidden();
+        });
+    }
     async new_code_challenge(method) {
         const form = this.request.form;
         form.elements["code_challenge_method"].value = method;
@@ -101,6 +159,7 @@ export class Authorization {
     async bind() {
         await parsed;
         const form = this.request.form;
+        this.bind_display_field();
         form.elements["code_challenge_method"].addEventListener("input", e => {
             e.preventDefault();
             this.new_code_challenge(e.target.value);

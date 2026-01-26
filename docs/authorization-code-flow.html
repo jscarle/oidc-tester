@@ -127,8 +127,8 @@
                             <input class="flex1" type="text" placeholder="scope" name="scope" />
                         </label>
                         <label>
-                            <span>audience</span>
-                            <input class="flex1" type="text" placeholder="audience" name="audience" />
+                            <span>resource</span>
+                            <input class="flex1" type="text" placeholder="resource" name="resource" />
                         </label>
                         <label>
                             <span>state</span>
@@ -148,13 +148,15 @@
                         </label>
                         <label>
                             <span>display</span>
-                            <select class="flex1" placeholder="display" name="display">
+                            <select class="flex1" placeholder="display" data-display-select>
                                 <option></option>
                                 <option>page</option>
                                 <option>popup</option>
                                 <option>touch</option>
                                 <option>wap</option>
+                                <option>custom</option>
                             </select>
+                            <input type="hidden" name="display" data-display-hidden />
                         </label>
                         <label>
                             <span>max_age</span>
